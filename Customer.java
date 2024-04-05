@@ -1,5 +1,10 @@
-public class Customer{
-    public static void main(String args[]){
-//sample text
-    }
+import java.util.*;
+class Customer{
+    String CustomerName = "";
+public Customer(String name ){
+    CustomerName = name;
+}
+    List<String> orders = new ArrayList<>();
+    
+
 }
