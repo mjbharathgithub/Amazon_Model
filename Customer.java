@@ -4,7 +4,16 @@ class Customer{
 public Customer(String name ){
     CustomerName = name;
 }
-    List<String> orders = new ArrayList<>();
+    List<Product> cart = new ArrayList<>();
+    
+    public void addToCart(Product product) {
+    	cart.add(product);//add each product to cart
+		
+	}
+    
+    public List<Product> placeOrder() {
+    	return this.cart;//return all the product added when orer placed
+		}
     
 
 }
