@@ -17,33 +17,59 @@ public class AmazonBeta {
                 if(adminObj.passCheck(pass)){
                     boolean adminFlag = true;
                     while (adminFlag){
-                        System.out.println("\n1.PENDING REQUESTS \n2.VIEW INVENTORY \n3.REMOVE SELLER \n4.REMOVE PRODUCT");
+                        System.out.println("\n1.PENDING REQUESTS \n2.APPROVE REQUEST \n3.VIEW INVENTORY \n4.REMOVE SELLER \n5.REMOVE PRODUCT");
                         int adminChoosen = sc.nextInt();
                         if(adminChoosen == 1){
                             adminObj.displayRequest();
                         }
-                        else if(adminChoosen == 2){
+                        else if(adminChoosen ==2){
+                            System.out.println("ENTER THE SELLER NAME FOR APPROVAL: ");
+                            String as = sc.nextLine();
+                            System.out.println("ENTER THE PRODUCT NAME FOR APPROVAL: ");
+                            String ap = sc.nextLine();
+                            Seller seller = adminObj.findSeller(as);
+                            if(seller != null){
+                                adminObj.addInventory(seller, ap);
+                            }
+                            else System.out.println("SELLER NOT FOUND!");
+                        }
+                        else if(adminChoosen == 3){
                             adminObj.displayInventory();
                         }
-                        else if(adminChoosen==3){
+                        else if(adminChoosen==4){
                             System.out.println("ENTER SELLERNAME: ");
                             String sname = sc.nextLine();
-                            adminObj.removeSeller(sname);
+                            Seller seller = adminObj.findSeller(sname);
+                            if(seller != null){
+                                adminObj.removeSeller(sname);
+                            }
+                            else System.out.println("SELLER NOT FOUND!");
                         }
-                        else if(adminChoosen == 4){
+                        else if(adminChoosen == 5){
                             System.out.println("ENTER SELLER NAME: ");
                             String sname = sc.nextLine();
-                            System.out.println("ENTER PRODUCT NAME: ");
-                            String pname = sc.nextLine();
-                            adminObj.removeProduct(sname,pname);
+                            System.out.println("ENTER PRODUCT ID: ");
+                            int  id = sc.nextInt();
+                            Seller seller = adminObj.findSeller(sname);
+                            if(seller != null){
+                                adminObj.removeProduct(seller, id);
+                            }
+                            else System.out.println("SELLER NOT FOUND!");
+                            
                         }
-                        System.out.println("DO YOU WANT TO CONTINUE (Y/N)? ");
+                        System.out.println("DO YOU WANT TO CONTINUE AS ADMIN (Y/N)? ");
                         String conti = sc.nextLine();
                         adminFlag = conti.equals("Y");
                     }
                 }
                 else System.out.println("WRONG ADMIN PASSWORD!");
             }
+            else if(choosen ==2){
+                
+            }
+            System.out.println("DO YOU WANT TO CONTINUE (Y/N)? ");
+            String conti = sc.nextLine();
+            userFlag = conti.equals("Y"); 
         }    
         
     }
