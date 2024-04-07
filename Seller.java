@@ -29,6 +29,9 @@ class Seller{
             System.out.println();
         }
     }
+    public void displayHistory(){
+        
+    }
 
 
 

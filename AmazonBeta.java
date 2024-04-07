@@ -67,23 +67,44 @@ public class AmazonBeta {
                 String sellername = sc.nextLine();
                 Seller thisSeller = adminObj.findSeller(sellername);
                 if(thisSeller == null){
+                    thisSeller = new Seller(sellername);
                     System.out.println("HURRAY!,NEW ACCOUNT FOR YOU HAS BEEN CREATED.\nGIVE REQUEST TO ADD PRODUCTS!");
                 }
                 else System.out.println("WELCOME BACK "+sellername+"!");
-                System.out.println("\n1.MY PRODUCTS \n2.ADD PRODUCT \n3.TRANSACTIONS HISTORY");
-                int sellerChoosen = sc.nextInt();
-                if(sellerChoosen == 1){
-                    adminObj.displayRequest(thisSeller);
+                boolean sellerFlag = true;
+                while(sellerFlag){
+                    System.out.println("\n1.MY PRODUCTS \n2.ADD PRODUCT \n3.TRANSACTIONS HISTORY");
+                    int sellerChoosen = sc.nextInt();
+                    if(sellerChoosen == 1){
+                        adminObj.displayRequest(thisSeller);
+                    }
+                    else if(sellerChoosen ==2){
+                        System.out.println("ENTER NAME OF THE PRODUCT: ");
+                        String prod = sc.nextLine();
+                        System.out.println("ENTER QUANTITY: ");
+                        int quantity = sc.nextInt();
+                        System.out.println("ENTER PRICE: ");
+                        int price = sc.nextInt();
+                        thisSeller.addProduct(prod, price, quantity);
+                    }
+                    else if(sellerChoosen ==3){
+                        thisSeller.displayHistory();
+                    }
+                    System.out.println("DO YOU WANT TO CONTINUE AS SELLER (Y/N)? ");
+                    String conti = sc.nextLine();
+                    sellerFlag = conti.equals("Y"); 
                 }
-                else if(sellerChoosen ==2){
-                    System.out.println("ENTER NAME OF THE PRODUCT: ");
-                    String prod = sc.nextLine();
-                    System.out.println("ENTER QUANTITY: ");
-                    int quantity = sc.nextInt();
-                    System.out.println("ENTER PRICE: ");
-                    int price = sc.nextInt();
-
-                }
+            }
+            else if(choosen ==3){
+            boolean cusFlag = true;
+            while(cusFlag){
+                System.out.println("ENTER YOUR NAME : ");
+                String cusName = sc.nextLine();
+                Customer thisCus = new Customer(cusName);
+                System.out.println("DO YOU WANT TO CONTINUE AS CUSTOMER (Y/N)? ");
+                String conti = sc.nextLine();
+                cusFlag = conti.equals("Y");
+            }
             }
             
             System.out.println("DO YOU WANT TO CONTINUE (Y/N)? ");
