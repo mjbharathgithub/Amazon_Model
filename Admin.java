@@ -1,5 +1,3 @@
-package AmazonBeta;
-
 import java.util.*;
 class Admin {
     //Instance variables
@@ -24,7 +22,6 @@ class Admin {
     }
 
     public void displayRequest(){
-        // used to display all the request by sellers for admin to approve one
         for(Seller s: requests.keySet()){
             System.out.println("SELLER : "+s.sellerName);
             List<Product> temp = requests.get(s);
@@ -36,8 +33,16 @@ class Admin {
         }
         
     }
+    public void displayRequest(Seller s){
+            System.out.println("SELLER : "+s.sellerName);
+            List<Product> temp = requests.get(s);
+            int index = 1;
+            for(Product p:temp){
+                System.out.println(index+".\tPRODUCT : "+p.product_name+"\tPRICE : "+p.price+"\tQUANTITY : "+p.quantity);
+            }
+    }
     public Seller findSeller(String sell){
-        for(Seller s:requests){
+        for(Seller s:requests.keySet()){
             if(s.sellerName == sell) return s;
         }
         System.out.println("SELLER NOT FOUND!");

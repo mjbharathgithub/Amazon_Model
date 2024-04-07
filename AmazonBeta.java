@@ -1,5 +1,3 @@
-package AmazonBeta;
-
 import java.util.Scanner;
 
 public class AmazonBeta {
@@ -41,7 +39,7 @@ public class AmazonBeta {
                             String sname = sc.nextLine();
                             Seller seller = adminObj.findSeller(sname);
                             if(seller != null){
-                                adminObj.removeSeller(sname);
+                                adminObj.removeSeller(seller);
                             }
                             else System.out.println("SELLER NOT FOUND!");
                         }
@@ -65,8 +63,29 @@ public class AmazonBeta {
                 else System.out.println("WRONG ADMIN PASSWORD!");
             }
             else if(choosen ==2){
-                
+                System.out.println("ENTER SELLER ID: ");
+                String sellername = sc.nextLine();
+                Seller thisSeller = adminObj.findSeller(sellername);
+                if(thisSeller == null){
+                    System.out.println("HURRAY!,NEW ACCOUNT FOR YOU HAS BEEN CREATED.\nGIVE REQUEST TO ADD PRODUCTS!");
+                }
+                else System.out.println("WELCOME BACK "+sellername+"!");
+                System.out.println("\n1.MY PRODUCTS \n2.ADD PRODUCT \n3.TRANSACTIONS HISTORY");
+                int sellerChoosen = sc.nextInt();
+                if(sellerChoosen == 1){
+                    adminObj.displayRequest(thisSeller);
+                }
+                else if(sellerChoosen ==2){
+                    System.out.println("ENTER NAME OF THE PRODUCT: ");
+                    String prod = sc.nextLine();
+                    System.out.println("ENTER QUANTITY: ");
+                    int quantity = sc.nextInt();
+                    System.out.println("ENTER PRICE: ");
+                    int price = sc.nextInt();
+
+                }
             }
+            
             System.out.println("DO YOU WANT TO CONTINUE (Y/N)? ");
             String conti = sc.nextLine();
             userFlag = conti.equals("Y"); 
