@@ -1,5 +1,4 @@
 import java.util.*;
-import java.util.Map.Entry;
 class Admin {
     //Instance variables
     public HashMap<Seller, List<Product>> inventory = new HashMap<>(); // used to remove a individual invventory or seller

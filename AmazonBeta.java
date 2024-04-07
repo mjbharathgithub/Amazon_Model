@@ -128,7 +128,7 @@ public class AmazonBeta {
                         System.out.println("ARE YOU SURE TO PLACE ORDER (Y/N) ?");
                         String sure = sc.nextLine();
                         if(sure=="Y"){
-                            int price = thisCus.getPrice();
+                            int price = thisCus.getCartPrice();
                             System.out.println("ONE STEP BEFORE ORDER PLACEMENT! \n PAYABLE AMOUNT : INR."+price+"/-");
                             System.out.println("ENTER TO BE PAID :");
                             int amount = sc.nextInt();

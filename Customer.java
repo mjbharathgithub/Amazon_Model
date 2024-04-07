@@ -14,26 +14,39 @@ public Customer(String name ){
 		
 	}
     
-    public void removeFromCart(String product) {
-    	for(Product pdt:cart){
-            if(pdt.product_name ==product){
-                cart.remove(pdt);
-                System.out.println(product+" IS REMOVED FROM YOUR CART");
-            }
-            else System.out.println(product+"IS UNAVAILABLE IN YOUR CART");
+    public void removeFromCart(String productName) {
+        if (this.cart.isEmpty()) {
+            System.out.println("CANNOT REMOVE ITEMS FROM AN EMPTY CART");
+            return;
         }
-    	
-		
-	}
-    public int getPrice(){
-        return 1;
+    
+        for (Product product : this.cart) {
+            if (product.product_name.equals(productName)) {
+                cart.remove(product);
+                System.out.println(productName + " IS REMOVED FROM YOUR CART");
+                return;
+            }
+        }
+        System.out.println(productName + " IS NOT FOUND IN YOUR CART");
+        
     }
     
+    
     public void viewCart() {
+        int total=0;
         System.out.println("YOUR CART");
-        this.cart.forEach(product -> System.out.println("PRODUCT NAME : " + product.product_name +
+        this.cart.forEach(product -> {System.out.println("PRODUCT NAME : " + product.product_name +
                                                          "\nPRICE : " + product.price +
-                                                         "\nQUANTITY : " + product.quantity));
+                                                         "\nQUANTITY : " + product.quantity);
+                                                         total+=product.price;
+                                                        });
+                                                        System.out.println("YOU HAVE "+cart.size()+" ITEMS IN YOUR CART\nTOTAL : "+total+" \u20A8");                                                 
+    }
+
+    public int getCartPrice(){
+        int total=0;
+        this.cart.forEach(product->total+=product.price);
+        return total;
     }
 
     public void clearCart() {
@@ -41,9 +54,7 @@ public Customer(String name ){
 		
 	}
     public List<Product> placeOrder() {
-        cart.clear();
     	return this.cart;//return all the product added when orer placed
-        
 		}
     
 
