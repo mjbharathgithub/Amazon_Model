@@ -1,4 +1,3 @@
-package amazonBeta.AmazonBeta;
 
 public class Product {
 	public String product_name;

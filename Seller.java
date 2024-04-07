@@ -24,13 +24,13 @@ class Seller{
     }
 
     public void displayProducts(){
-        for(String pName:products.getKey()){
+        for(String pName:products.keySet()){
             getProductByName(pName);
             System.out.println();
         }
     }
     public void displayHistory(){
-        
+
     }
 
 

@@ -1,8 +1,12 @@
 import java.util.*;
+import java.util.Map.Entry;
 class Admin {
     //Instance variables
     public HashMap<Seller, List<Product>> inventory = new HashMap<>(); // used to remove a individual invventory or seller
     public HashMap<Seller, List<Product>> requests=new HashMap<>(); // used to approve requests!
+    public HashMap<String, Customer>customers=new HashMap<>(); 
+    public HashMap<String, Seller>sellers=new HashMap<>(); 
+
     String adminPass = "amazon321";
     public boolean passCheck(String s){
         return s.equals(adminPass);
@@ -45,8 +49,17 @@ class Admin {
         for(Seller s:requests.keySet()){
             if(s.sellerName == sell) return s;
         }
-        System.out.println("SELLER NOT FOUND!");
         return null;
+    }
+    public Customer findCustomer(String cus){
+        if(customers.containsKey(cus))return customers.get(cus);
+        return null;
+    }
+    public void addSeller(String seller,Seller obj){
+        sellers.put(seller,obj);
+    }
+    public void addCustomer(String cus,Customer obj){
+        customers.put(cus,obj);
     }
     public void addInventory(Seller s, String prd){
         // used to add the approved products to inventory
@@ -112,5 +125,8 @@ class Admin {
         requests.remove(s);
         inventory.remove(s);
         System.out.println("SELLER "+s.sellerName+" REMOVED SUCCESSFULLY!\n");
+    }
+    public void order(List<Product> arr){
+        
     }
 }
