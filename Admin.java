@@ -44,9 +44,24 @@ class Admin {
                 System.out.println(index+".\tPRODUCT : "+p.product_name+"\tPRICE : "+p.price+"\tQUANTITY : "+p.quantity);
             }
     }
-    public Seller findSeller(String sell){
-        for(Seller s:requests.keySet()){
-            if(s.sellerName == sell) return s;
+    public Seller findSeller(String sell,boolean isRequest){
+        if(isRequest){
+            for(Seller s:requests.keySet()){
+                if(s.sellerName.equals(sell)) return s;
+            }
+            return null;
+        }
+        else{
+            for(String s:sellers.keySet()){
+                if(s.equals(sell)) return sellers.get(s);
+            }
+            return null;
+        }
+    }
+    public Product prdFinder(Seller sell,String ap){
+        List<Product>temp = requests.get(sell);
+        for(Product p:temp){
+            if(p.product_name.equals(ap))return p;
         }
         return null;
     }
@@ -60,32 +75,21 @@ class Admin {
     public void addCustomer(String cus,Customer obj){
         customers.put(cus,obj);
     }
-    public void addInventory(Seller s, String prd){
-        // used to add the approved products to inventory
-        int product_index = requests.get(s).indexOf(prd);
-        if(product_index == -1){
-            System.out.println("PRODUCT NOT FOUND!");
-            return;
-        }
-        Product p= requests.get(s).get(product_index);
+    public void addInventory(Seller s,Product prd){
+       List<Product> temp = inventory.getOrDefault(s,new ArrayList<>());
+       temp.add(prd);
+       inventory.put(s,temp);
+       
+       temp = requests.get(s);
+       if (temp != null) {
+           temp.remove(prd);
+           if (temp.isEmpty()) {
+               requests.remove(s);
+           }
+       }
 
-        List<Product> temp;
-        if(inventory.containsKey(s)){
-            temp = inventory.get(s);
-        }
-        else{
-            temp = new ArrayList<>();
-        }
-
-        temp.add(p);
-        inventory.put(s, temp);
-
-        requests.get(s).remove(p);
-        if(requests.get(s).size()==0){
-            requests.remove(s);
-        }
-
-        s.products.put(p.product_name, p);
+       s.addProduct(prd);
+       addSeller(s.sellerName,s);
         System.out.println("INVENTORY UPDATED SUCCESSFULLY !\n");
     }
     
@@ -108,11 +112,12 @@ class Admin {
             List<Product> temp = inventory.get(s);
             Product p = temp.get(product_index-1);
             temp.remove(p);
-            inventory.put(s, temp);
-            s.products.remove(p.product_name);
-            if(temp.size()==0){
+            if(temp.isEmpty()){
                 inventory.remove(s);
             }
+            else inventory.put(s, temp);
+            s.products.remove(p.product_name);
+            
             System.out.println("PRODUCT : "+p.product_name+" IS REMOVED SUCCESSFULLY !\n");
         }
         else{
@@ -121,7 +126,7 @@ class Admin {
     }
     
     public void removeSeller(Seller s){
-        requests.remove(s);
+        if(requests.containsKey(s))requests.remove(s);
         inventory.remove(s);
         System.out.println("SELLER "+s.sellerName+" REMOVED SUCCESSFULLY!\n");
     }

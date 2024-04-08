@@ -35,17 +35,20 @@ public Customer(String name ){
     public void viewCart() {
         int total=0;
         System.out.println("YOUR CART");
-        this.cart.forEach(product -> {System.out.println("PRODUCT NAME : " + product.product_name +
+        for(Product product:cart){
+            System.out.println("PRODUCT NAME : " + product.product_name +
                                                          "\nPRICE : " + product.price +
                                                          "\nQUANTITY : " + product.quantity);
                                                          total+=product.price;
-                                                        });
-                                                        System.out.println("YOU HAVE "+cart.size()+" ITEMS IN YOUR CART\nTOTAL : "+total+" \u20A8");                                                 
+        }
+        System.out.println("YOU HAVE "+cart.size()+" ITEMS IN YOUR CART\nTOTAL : "+total+" \u20A8");                                                 
     }
 
     public int getCartPrice(){
         int total=0;
-        this.cart.forEach(product->total+=product.price);
+        for(Product product:cart){
+            total+=product.price;
+        }
         return total;
     }
 

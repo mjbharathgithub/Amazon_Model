@@ -6,12 +6,9 @@ class Seller{
     Seller(String sellerName){
         this.sellerName=sellerName;
     }
-
-    public void addProduct(String productName,int price,int quantity){
-        Admin a=new Admin();
-        a.request(this,new Product(productName,price,quantity));
+    public void addProduct(Product p){
+        products.put(p.product_name,p);
     }
-
     public void getProductByName(String productName){
         if(products.containsKey(productName)){
             Product p=products.get(productName);

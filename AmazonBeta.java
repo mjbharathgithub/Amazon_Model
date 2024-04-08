@@ -9,6 +9,7 @@ public class AmazonBeta {
         while(userFlag){
             System.out.println("ENTER YOUR IDENTITY: \n1.ADMIN \n2.SELLER \n3.CUSTOMER ");
             int choosen = sc.nextInt();
+            sc.nextLine();
             if(choosen == 1){
                 System.out.println("ENTER ADMIN PASSWORD: ");
                 String pass = sc.nextLine();
@@ -17,6 +18,7 @@ public class AmazonBeta {
                     while (adminFlag){
                         System.out.println("\n1.PENDING REQUESTS \n2.APPROVE REQUEST \n3.VIEW INVENTORY \n4.REMOVE SELLER \n5.REMOVE PRODUCT");
                         int adminChoosen = sc.nextInt();
+                        sc.nextLine();
                         if(adminChoosen == 1){
                             adminObj.displayRequest();
                         }
@@ -25,11 +27,17 @@ public class AmazonBeta {
                             String as = sc.nextLine();
                             System.out.println("ENTER THE PRODUCT NAME FOR APPROVAL: ");
                             String ap = sc.nextLine();
-                            Seller seller = adminObj.findSeller(as);
+                            Seller seller = adminObj.findSeller(as,true);
+                            
                             if(seller != null){
-                                adminObj.addInventory(seller, ap);
+                                Product prd = adminObj.prdFinder(seller,ap);
+                                if(prd!=null){
+                                    adminObj.addInventory(seller, prd);
+                                }
+                                else System.out.println("PRODUCT NOT FOUND IN THE REQUESTS!");
+                                
                             }
-                            else System.out.println("SELLER NOT FOUND!");
+                            else System.out.println("SELLER NOT FOUND FOR APPROVAL!");
                         }
                         else if(adminChoosen == 3){
                             adminObj.displayInventory();
@@ -37,7 +45,7 @@ public class AmazonBeta {
                         else if(adminChoosen==4){
                             System.out.println("ENTER SELLERNAME: ");
                             String sname = sc.nextLine();
-                            Seller seller = adminObj.findSeller(sname);
+                            Seller seller = adminObj.findSeller(sname,false);
                             if(seller != null){
                                 adminObj.removeSeller(seller);
                             }
@@ -48,7 +56,8 @@ public class AmazonBeta {
                             String sname = sc.nextLine();
                             System.out.println("ENTER PRODUCT ID: ");
                             int  id = sc.nextInt();
-                            Seller seller = adminObj.findSeller(sname);
+                            sc.nextLine();
+                            Seller seller = adminObj.findSeller(sname,false);
                             if(seller != null){
                                 adminObj.removeProduct(seller, id);
                             }
@@ -65,7 +74,7 @@ public class AmazonBeta {
             else if(choosen ==2){
                 System.out.println("ENTER SELLER ID: ");
                 String sellername = sc.nextLine();
-                Seller thisSeller = adminObj.findSeller(sellername);
+                Seller thisSeller = adminObj.findSeller(sellername,false);
                 if(thisSeller == null){
                     thisSeller = new Seller(sellername);
                     adminObj.addSeller(sellername,thisSeller);
@@ -76,6 +85,7 @@ public class AmazonBeta {
                 while(sellerFlag){
                     System.out.println("\n1.MY PRODUCTS \n2.ADD PRODUCT \n3.TRANSACTIONS HISTORY");
                     int sellerChoosen = sc.nextInt();
+                    sc.nextLine();
                     if(sellerChoosen == 1){
                         adminObj.displayRequest(thisSeller);
                     }
@@ -84,9 +94,11 @@ public class AmazonBeta {
                         String prod = sc.nextLine();
                         System.out.println("ENTER QUANTITY: ");
                         int quantity = sc.nextInt();
+                        sc.nextLine();
                         System.out.println("ENTER PRICE: ");
                         int price = sc.nextInt();
-                        thisSeller.addProduct(prod, price, quantity);
+                        sc.nextLine();
+                        adminObj.request(thisSeller,new Product(prod,thisSeller.sellerName,price,quantity));
                     }
                     else if(sellerChoosen ==3){
                         thisSeller.displayHistory();
@@ -110,6 +122,7 @@ public class AmazonBeta {
                 while(cusFlag){
                     System.out.println("\n1.PRODUCTS \n2.MY CART \n3.CLEAR CART \n4.REMOVE FROM CART \n5.PLACE ORDER");
                     int cusChoosen = sc.nextInt();
+                    sc.nextLine();
                     if(cusChoosen ==1){
                         adminObj.displayInventory();
                     }
@@ -132,6 +145,7 @@ public class AmazonBeta {
                             System.out.println("ONE STEP BEFORE ORDER PLACEMENT! \n PAYABLE AMOUNT : INR."+price+"/-");
                             System.out.println("ENTER TO BE PAID :");
                             int amount = sc.nextInt();
+                            sc.nextLine();
                             if(amount ==price){
                                 adminObj.order(thisCus.placeOrder());
                             }
