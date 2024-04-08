@@ -37,12 +37,15 @@ class Admin {
         
     }
     public void displayRequest(Seller s){
-            System.out.println("SELLER : "+s.sellerName);
+            if(inventory.containsKey(s)){
+                System.out.println("SELLER : "+s.sellerName);
             List<Product> temp = requests.get(s);
             int index = 1;
             for(Product p:temp){
                 System.out.println(index+".\tPRODUCT : "+p.product_name+"\tPRICE : "+p.price+"\tQUANTITY : "+p.quantity);
             }
+            }
+            else System.out.println("YOU HAVE NO APPROVED PRODUCTS!");
     }
     public Seller findSeller(String sell,boolean isRequest){
         if(isRequest){
@@ -58,12 +61,21 @@ class Admin {
             return null;
         }
     }
-    public Product prdFinder(Seller sell,String ap){
-        List<Product>temp = requests.get(sell);
-        for(Product p:temp){
-            if(p.product_name.equals(ap))return p;
+    public Product prdFinder(Seller sell,String ap,boolean isRequest){
+        if(isRequest){
+            List<Product>temp = requests.get(sell);
+            for(Product p:temp){
+                if(p.product_name.equals(ap))return p;
+            }
+            return null;
         }
-        return null;
+        else {
+            List<Product>temp = inventory.get(sell);
+            for(Product p:temp){
+                if(p.product_name.equals(ap))return p;
+            }
+            return null;
+        }
     }
     public Customer findCustomer(String cus){
         if(customers.containsKey(cus))return customers.get(cus);
@@ -130,7 +142,17 @@ class Admin {
         inventory.remove(s);
         System.out.println("SELLER "+s.sellerName+" REMOVED SUCCESSFULLY!\n");
     }
-    public void order(List<Product> arr){
-        
+    public void order(String cusName,List<Product> arr){
+        Customer tmp = customers.get(cusName);
+        for(Product tp :arr){
+            Seller s = sellers.get(tp.sellerName);
+            s.addTransaction(cusName,tp,1);
+            tmp.addTransaction(tp,1);
+            sellers.put(tp.sellerName,s);
+            tmp.removeFromCart(tp.product_name);
+        }
+        System.out.println("ORDER PLACED SUCCESSFULLY!");
+        customers.put(cusName,tmp);
+
     }
 }

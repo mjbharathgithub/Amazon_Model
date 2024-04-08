@@ -30,7 +30,7 @@ public class AmazonBeta {
                             Seller seller = adminObj.findSeller(as,true);
                             
                             if(seller != null){
-                                Product prd = adminObj.prdFinder(seller,ap);
+                                Product prd = adminObj.prdFinder(seller,ap,true);
                                 if(prd!=null){
                                     adminObj.addInventory(seller, prd);
                                 }
@@ -66,8 +66,9 @@ public class AmazonBeta {
                         }
                         System.out.println("DO YOU WANT TO CONTINUE AS ADMIN (Y/N)? ");
                         String conti = sc.nextLine();
-                        adminFlag = conti.equals("Y");
+                        adminFlag = conti.toLowerCase().equals("y");
                     }
+                    System.out.println("LOGGED OUT SUCCESSFULLY FROM ADMIN!");
                 }
                 else System.out.println("WRONG ADMIN PASSWORD!");
             }
@@ -105,8 +106,9 @@ public class AmazonBeta {
                     }
                     System.out.println("DO YOU WANT TO CONTINUE AS SELLER (Y/N)? ");
                     String conti = sc.nextLine();
-                    sellerFlag = conti.equals("Y"); 
+                    sellerFlag = conti.toLowerCase().equals("y");
                 }
+                System.out.println("LOGGED OUT SUCCESSFULLY FROM SELLER!");
             }
             else if(choosen ==3){
                 System.out.println("ENTER YOUR NAME : ");
@@ -120,11 +122,29 @@ public class AmazonBeta {
                 else System.out.println("WELCOME BACK "+cusName+"!");
                 boolean cusFlag = true;
                 while(cusFlag){
-                    System.out.println("\n1.PRODUCTS \n2.MY CART \n3.CLEAR CART \n4.REMOVE FROM CART \n5.PLACE ORDER");
+                    System.out.println("\n1.PRODUCTS \n2.MY CART \n3.CLEAR CART \n4.REMOVE FROM CART \n5.PLACE ORDER \n6.ORDER HISTORY");
                     int cusChoosen = sc.nextInt();
                     sc.nextLine();
                     if(cusChoosen ==1){
                         adminObj.displayInventory();
+                        System.out.println("PRESS 0 -> SHOP \n1 -> EXIT");
+                        int n= sc.nextInt();
+                        sc.nextLine();
+                        while(n==0){
+                            System.out.println("ENTER SELLER NAME OF THE PRODUCT: ");
+                            String s = sc.nextLine();
+                            System.out.println("ENTER PRODUCT NAME: ");
+                            String prd = sc.nextLine();
+                            Product p = adminObj.prdFinder(adminObj.sellers.get(s),prd,false);
+                            if(p!=null){
+                                thisCus.addToCart(p);
+                            }
+                            else System.out.println("THE PRODUCT THAT YOU HAVE ENTERED IS INCORRECT!");
+                            
+                            System.out.println("PRESS 0 -> SHOP \n1 -> EXIT");
+                            n= sc.nextInt();
+                            sc.nextLine();
+                        }
                     }
                     else if(cusChoosen == 2){
                         thisCus.viewCart();
@@ -140,28 +160,32 @@ public class AmazonBeta {
                     else if(cusChoosen ==5){
                         System.out.println("ARE YOU SURE TO PLACE ORDER (Y/N) ?");
                         String sure = sc.nextLine();
-                        if(sure=="Y"){
+                        if(sure.toLowerCase().equals("y")){
                             int price = thisCus.getCartPrice();
                             System.out.println("ONE STEP BEFORE ORDER PLACEMENT! \n PAYABLE AMOUNT : INR."+price+"/-");
-                            System.out.println("ENTER TO BE PAID :");
+                            System.out.println("ENTER AMOUNT TO BE PAID :");
                             int amount = sc.nextInt();
                             sc.nextLine();
                             if(amount ==price){
-                                adminObj.order(thisCus.placeOrder());
+                                adminObj.order(cusName,thisCus.placeOrder());
                             }
                             else System.out.println("INVALID AMOUNT ENTERED!");
                         }
                     }
+                    if(cusChoosen ==6){
+                        thisCus.displayHistory();
+                    }
                     System.out.println("DO YOU WANT TO CONTINUE AS CUSTOMER (Y/N)? ");
                     String conti = sc.nextLine();
-                    cusFlag = conti.equals("Y");
+                    cusFlag = conti.toLowerCase().equals("y");
                 }
+                System.out.println("LOGGED OUT SUCCESSFULLY!");
             }
             
             System.out.println("DO YOU WANT TO CONTINUE (Y/N)? ");
             String conti = sc.nextLine();
-            userFlag = conti.equals("Y"); 
+            userFlag = conti.toLowerCase().equals("y");
         }    
-        
+        sc.close();
     }
 }
